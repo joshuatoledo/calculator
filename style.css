@@ -1,0 +1,62 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f4f4f4;
+}
+
+.calculator {
+  background: #222;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #000;
+  width: 260px;
+}
+
+.display {
+  background: #000;
+  color: #0f0;
+  font-size: 2em;
+  text-align: right;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap; /* allows wrapping into rows */
+  gap: 10px;
+}
+
+button {
+  flex: 1 0 22%; /* about 4 buttons per row */
+  padding: 15px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #eee;
+}
+
+button:hover {
+  background: #ddd;
+}
+
+button#clear {
+  background: #ff9500;
+  color: #fff;
+}
+
+button#clearAll {
+  background: #ff3b30;
+  color: #fff;
+}
+
+button#equal {
+  background: #34c759;
+  color: #fff;
+  flex: 1 0 47%; /* make equal button wider */
+}
