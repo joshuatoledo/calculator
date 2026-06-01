@@ -45,17 +45,17 @@ button:hover {
   background: #ddd;
 }
 
-button#clear {
+button.clear {
   background: #ff9500;
   color: #fff;
 }
 
-button#clearAll {
+button.clearAll {
   background: #ff3b30;
   color: #fff;
 }
 
-button#equal {
+button.equal {
   background: #34c759;
   color: #fff;
   flex: 1 0 47%; /* make equal button wider */
