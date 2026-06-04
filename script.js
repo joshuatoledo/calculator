@@ -42,9 +42,15 @@ function operate(operator, a, b) {
 }
 
 let waitingForNextNumber = true;
+let justCalculated = false;
 
 numbers.forEach((number) => {
   number.addEventListener("click", () => {
+    if (justCalculated){
+       display.textContent = number.textContent;
+       justCalculated = false;
+       return;
+    }
     if (waitingForNextNumber && operatorButton !== "") {
       display.textContent = number.textContent;
       waitingForNextNumber = false;
@@ -58,33 +64,58 @@ numbers.forEach((number) => {
 
 operator.forEach((op) => {
   op.addEventListener("click", () => {
-    if (firstNumber !== "" && operatorButton !== "") {
-      secondNumber = display.textContent;
-      const result = operate(
-        operatorButton,
-        parseFloat(firstNumber),
-        parseFloat(secondNumber),
-      );
-      display.textContent = result;
-      firstNumber = result;
-      waitingForNextNumber = true;
+    const operators = ["+", "-", "*", "/"];
+    const lastChar = display.textContent.slice(-1);
+
+    // Replace if last char is already an operator
+    if (operators.includes(lastChar)) {
+      display.textContent = display.textContent.slice(0, -1) + op.textContent;
     } else {
       firstNumber = display.textContent;
-      waitingForNextNumber = true;
+      display.textContent += op.textContent; // <-- append operator visibly
+    }
+
+    if(firstNumber !== '' && operatorButton !== '') {
+        const result = operate(
+          operatorButton,
+          parseFloat(firstNumber),
+          parseFloat(secondNumber),
+  );
+    display.textContent = result;
+    return;
     }
 
     operatorButton = op.textContent;
+    waitingForNextNumber = true;
+  
   });
 });
 
 equal.addEventListener("click", () => {
-  secondNumber = display.textContent;
+  const operators = ["+", "-", "*", "/"];
+  const lastChar = display.textContent.slice(-1);
+
+  // Guard: if no operator or ends with operator, do nothing
+  if (operatorButton === "" || operators.includes(lastChar)) return;
+
+  // Extract second number (everything after the operator symbol)
+  secondNumber = display.textContent.split(operatorButton).pop();
+
+  if (secondNumber === '') return;
+
   const result = operate(
     operatorButton,
     parseFloat(firstNumber),
     parseFloat(secondNumber),
   );
-  display.textContent = result;
+ 
+ display.textContent = result;
+ firstNumber = result
+  operatorButton = "";
+  waitingForNextNumber = false;
+  justCalculated = true; //
+
+
 });
 
 clearAll.addEventListener("click", () => {
