@@ -24,7 +24,7 @@ function multiply(a, b) {
 
 function divide(a, b) {
   if (b === 0) {
-    return 'Error';
+    return "Error";
   }
   return a / b;
 }
@@ -37,15 +37,15 @@ function operate(operator, a, b) {
       break;
     case "-":
       result = subtract(a, b);
-        break;
+      break;
     case "*":
       result = multiply(a, b);
-        break;
+      break;
     case "/":
       result = divide(a, b);
-        break;
+      break;
     default:
-       "Invalid operator";
+      "Invalid operator";
   }
   return Math.round(result * 1000) / 1000;
 }
@@ -55,10 +55,10 @@ let justCalculated = false;
 
 numbers.forEach((number) => {
   number.addEventListener("click", () => {
-    if (justCalculated){
-       display.textContent = number.textContent;
-       justCalculated = false;
-       return;
+    if (justCalculated) {
+      display.textContent = number.textContent;
+      justCalculated = false;
+      return;
     }
     if (waitingForNextNumber && operatorButton !== "") {
       display.textContent += number.textContent;
@@ -79,10 +79,10 @@ operator.forEach((op) => {
     // Replace if last char is already an operator
     if (operators.includes(lastChar)) {
       display.textContent = display.textContent.slice(0, -1) + op.textContent;
-    } else if (firstNumber !== '' && operatorButton !== '') {
+    } else if (firstNumber !== "" && operatorButton !== "") {
       secondNumber = display.textContent.split(operatorButton).pop();
-         
-      if (secondNumber !== '') {
+
+      if (secondNumber !== "") {
         const result = operate(
           operatorButton,
           parseFloat(firstNumber),
@@ -90,14 +90,13 @@ operator.forEach((op) => {
         );
         display.textContent = result + op.textContent; // show result + new operator
         firstNumber = result;
-          }
-    }else{
+      }
+    } else {
       firstNumber = display.textContent;
       display.textContent += op.textContent; // <-- append operator visibly
-    };
+    }
     operatorButton = op.textContent;
     waitingForNextNumber = true;
-  
   });
 });
 
@@ -109,17 +108,17 @@ equal.addEventListener("click", () => {
   // Extract second number (everything after the operator symbol)
   secondNumber = display.textContent.split(operatorButton).pop();
 
-  if (secondNumber === '') return;
+  if (secondNumber === "") return;
   const result = operate(
     operatorButton,
     parseFloat(firstNumber),
     parseFloat(secondNumber),
   );
- display.textContent = result;
- firstNumber = result
+  display.textContent = result;
+  firstNumber = result;
   operatorButton = "";
   waitingForNextNumber = false;
-  justCalculated = true; 
+  justCalculated = true;
 });
 
 clearAll.addEventListener("click", () => {
