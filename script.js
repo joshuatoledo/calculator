@@ -141,3 +141,18 @@ decimal.addEventListener("click", () => {
     display.textContent = display.textContent + decimal.textContent;
   }
 });
+
+document.addEventListener("keydown", (event) => {
+  const key = event.key;
+
+  if (!isNaN(key)) {
+    if (waitingForNextNumber) {
+      display.textContent = key;
+      waitingForNextNumber = false;
+    } else if (display.textContent === "0") {
+      display.textContent = key;
+    } else {
+      display.textContent += key;
+    }
+  }
+});
