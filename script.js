@@ -23,22 +23,31 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+  if (b === 0) {
+    return 'Error';
+  }
   return a / b;
 }
 
 function operate(operator, a, b) {
+  let result;
   switch (operator) {
     case "+":
-      return add(a, b);
+      result = add(a, b);
+      break;
     case "-":
-      return subtract(a, b);
+      result = subtract(a, b);
+        break;
     case "*":
-      return multiply(a, b);
+      result = multiply(a, b);
+        break;
     case "/":
-      return divide(a, b);
+      result = divide(a, b);
+        break;
     default:
-      return "Invalid operator";
+       "Invalid operator";
   }
+  return Math.round(result * 1000) / 1000;
 }
 
 let waitingForNextNumber = true;
@@ -52,7 +61,7 @@ numbers.forEach((number) => {
        return;
     }
     if (waitingForNextNumber && operatorButton !== "") {
-      display.textContent = number.textContent;
+      display.textContent += number.textContent;
       waitingForNextNumber = false;
     } else if (display.textContent === "0") {
       display.textContent = number.textContent;
@@ -70,21 +79,22 @@ operator.forEach((op) => {
     // Replace if last char is already an operator
     if (operators.includes(lastChar)) {
       display.textContent = display.textContent.slice(0, -1) + op.textContent;
-    } else {
-      firstNumber = display.textContent;
-      display.textContent += op.textContent; // <-- append operator visibly
-    }
-
-    if(firstNumber !== '' && operatorButton !== '') {
+    } else if (firstNumber !== '' && operatorButton !== '') {
+      secondNumber = display.textContent.split(operatorButton).pop();
+         
+      if (secondNumber !== '') {
         const result = operate(
           operatorButton,
           parseFloat(firstNumber),
           parseFloat(secondNumber),
-  );
-    display.textContent = result;
-    return;
-    }
-
+        );
+        display.textContent = result + op.textContent; // show result + new operator
+        firstNumber = result;
+          }
+    }else{
+      firstNumber = display.textContent;
+      display.textContent += op.textContent; // <-- append operator visibly
+    };
     operatorButton = op.textContent;
     waitingForNextNumber = true;
   
@@ -94,28 +104,22 @@ operator.forEach((op) => {
 equal.addEventListener("click", () => {
   const operators = ["+", "-", "*", "/"];
   const lastChar = display.textContent.slice(-1);
-
   // Guard: if no operator or ends with operator, do nothing
   if (operatorButton === "" || operators.includes(lastChar)) return;
-
   // Extract second number (everything after the operator symbol)
   secondNumber = display.textContent.split(operatorButton).pop();
 
   if (secondNumber === '') return;
-
   const result = operate(
     operatorButton,
     parseFloat(firstNumber),
     parseFloat(secondNumber),
   );
- 
  display.textContent = result;
  firstNumber = result
   operatorButton = "";
   waitingForNextNumber = false;
-  justCalculated = true; //
-
-
+  justCalculated = true; 
 });
 
 clearAll.addEventListener("click", () => {
