@@ -146,6 +146,11 @@ document.addEventListener("keydown", (event) => {
   const key = event.key;
 
   if (!isNaN(key)) {
+    if (justCalculated) {
+      display.textContent = key;
+      justCalculated = false;
+      return;
+    }
     if (waitingForNextNumber) {
       display.textContent = key;
       waitingForNextNumber = false;
@@ -153,6 +158,63 @@ document.addEventListener("keydown", (event) => {
       display.textContent = key;
     } else {
       display.textContent += key;
+    }
+  }
+
+  if (["+", "-", "*", "/"].includes(key)) {
+    if (firstNumber !== "" && operatorButton !== "") {
+      secondNumber = display.textContent.split(operatorButton).pop();
+
+      if (secondNumber !== "") {
+        const result = operate(
+          operatorButton,
+          parseFloat(firstNumber),
+          parseFloat(secondNumber),
+        );
+        display.textContent = result; // show result + new operator
+        firstNumber = result;
+      }
+    } else {
+      firstNumber = display.textContent;
+      display.textContent = key; // <-- append operator visibly
+    }
+    operatorButton = key;
+    waitingForNextNumber = true;
+  }
+
+  if (key === "=" || key === "Enter") {
+    if (operatorButton === "") return;
+    secondNumber = display.textContent;
+    const result = operate(
+      operatorButton,
+      parseFloat(firstNumber),
+      parseFloat(secondNumber),
+    );
+    display.textContent = result;
+    firstNumber = result;
+    operatorButton = "";
+    waitingForNextNumber = false;
+    justCalculated = true;
+  }
+
+  if (key === "Backspace") {
+    if (display.textContent.length > 1) {
+      display.textContent = display.textContent.slice(0, -1);
+    } else {
+      display.textContent = "0";
+    }
+  }
+
+  if (key === "Escape") {
+    firstNumber = "";
+    secondNumber = "";
+    operatorButton = "";
+    display.textContent = "0";
+  }
+
+  if (key === ".") {
+    if (!display.textContent.includes(".")) {
+      display.textContent = display.textContent + decimal.textContent;
     }
   }
 });
