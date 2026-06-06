@@ -32,7 +32,7 @@ body {
 }
 
 button {
-  flex: 1 0 22%; /* about 4 buttons per row */
+  flex: 1 0 30%; /* about 4 buttons per row */
   padding: 15px;
   font-size: 1.2em;
   border: none;
